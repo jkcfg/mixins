@@ -21,10 +21,10 @@ function mix(...transforms) {
 
 // patches makes a transformation that will structurally patch the
 // value using the objects supplied.
-function patches(...patch) /* transform */ {
+function patches(...ps) /* transform */ {
   return function(obj) {
     let o = obj;
-    for (const p of patch) {
+    for (const p of ps) {
       o = patch(o, p);
     }
     return o;
@@ -40,14 +40,21 @@ function patch(obj, patchObj) {
     for (const k in obj) {
       if (!obj.hasOwnProperty(k)) continue;
       if (k in patchObj) {
-        result[k] = patch(v, patchObj[k]);
+        result[k] = patch(obj[k], patchObj[k]);
       } else {
-        result[k] = v;
+        result[k] = obj[k];
       }
+    }
+    for (const k in patchObj) {
+      if (!patchObj.hasOwnProperty(k)) continue;
+      if (k in obj) continue;
+      result[k] = patchObj[k];
     }
     return result;
   }
-  case 'string', 'number', 'boolean':
+  case 'string':
+  case 'number':
+  case 'boolean':
     return patchObj;
   default:
     throw new Error('unhandled patch case: ' + (typeof obj));
