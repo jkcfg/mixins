@@ -4,31 +4,22 @@
 // eg.
 
 function mix(...transforms) {
-  var r = {};
+  let r = {};
 
   for (const transform of transforms) {
-    switch (typeof(transform)) {
-    case "object":
+    switch (typeof transform) {
+    case 'object':
       r = Object.assign({}, r, transform);
       break;
-    case "function":
+    case 'function':
       r = transform(r);
+      break;
+    default:
+      throw new TypeError('only objects and functions allowed as arguments');
     }
   }
 
   return r;
-}
-
-// patches makes a transformation that will structurally patch the
-// value using the objects supplied.
-function patches(...ps) /* transform */ {
-  return function(obj) {
-    let o = obj;
-    for (const p of ps) {
-      o = patch(o, p);
-    }
-    return o;
-  }
 }
 
 // patch returns a new value that has the fields of `obj`, except
@@ -37,18 +28,17 @@ function patch(obj, patchObj) {
   switch (typeof obj) {
   case 'object': {
     const result = {};
-    for (const k in obj) {
-      if (!obj.hasOwnProperty(k)) continue;
+    for (const [k, v] of Object.entries(obj)) {
       if (k in patchObj) {
-        result[k] = patch(obj[k], patchObj[k]);
+        result[k] = patch(v, patchObj[k]);
       } else {
-        result[k] = obj[k];
+        result[k] = v;
       }
     }
-    for (const k in patchObj) {
-      if (!patchObj.hasOwnProperty(k)) continue;
-      if (k in obj) continue;
-      result[k] = patchObj[k];
+    for (const [pk, pv] of Object.entries(patchObj)) {
+      if (!(pk in obj)) {
+        result[pk] = pv;
+      }
     }
     return result;
   }
@@ -57,8 +47,20 @@ function patch(obj, patchObj) {
   case 'boolean':
     return patchObj;
   default:
-    throw new Error('unhandled patch case: ' + (typeof obj));
+    throw new Error(`unhandled patch case: ${typeof obj}`);
   }
+}
+
+// patches makes a transformation that will structurally patch the
+// value using the objects supplied.
+function patches(...ps) /* transform */ {
+  return (obj) => {
+    let o = obj;
+    for (const p of ps) {
+      o = patch(o, p);
+    }
+    return o;
+  };
 }
 
 export { patch, patches, mix };
