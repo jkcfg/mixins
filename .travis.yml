@@ -5,12 +5,13 @@ cache: npm
 
 jobs:
   include:
-    - script: npm run lint
-    - script: npm test
+    - stage: Tests
+      name: lint
+      script: npm run lint
 
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: npm publish
-  on:
-    tags: true
+    - name: unit tests
+      script: npm test
+
+    - stage: Deploy
+      script: npm publish
+      if: tag = true
