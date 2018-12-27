@@ -4,7 +4,7 @@
     "url": "https://github.com/jkcfg/mixins/issues"
   },
   "dependencies": {},
-  "description": "jk standard library",
+  "description": "Compose JS objects",
   "devDependencies": {
     "babel-jest": "^23.6.0",
     "babel-preset-env": "^1.7.0",
