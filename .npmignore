@@ -1,0 +1,4 @@
+*.tgz
+/.travis.yml
+/examples
+/tests

@@ -11,10 +11,7 @@
     "eslint": "^5.10.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
-    "jest": "^23.6.0",
-    "rollup": "^0.67.0",
-    "rollup-plugin-includepaths": "^0.2.3",
-    "terser": "^3.10.11"
+    "jest": "^23.6.0"
   },
   "homepage": "https://github.com/jkcfg/mixins#readme",
   "keywords": [
@@ -23,14 +20,13 @@
     "generation"
   ],
   "license": "Apache-2.0",
-  "main": "lib/mixins.mjs",
+  "module": "src/mixins.js",
   "name": "@jkcfg/mixins",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jkcfg/mixins.git"
   },
   "scripts": {
-    "build": "rollup -c | terser --mangle --module > lib/mixins.mjs",
     "lint": "eslint src",
     "test": "jest"
   },
