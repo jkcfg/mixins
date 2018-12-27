@@ -1,8 +1,16 @@
 // mixins are functions that take an object a return a new instance of that
-// object after having applied an arbitrary transformation on it.
+// object after having applied an arbitrary transformation on it. The signature
+// of a transformation looks like:
+//
 //    f(old) -> new
+//
 // eg.
-
+//
+//   const withNamespace = ns => (
+//     obj => patch(obj, { metadata: { namespace: ns } })
+//   );
+//
+//   mix(deployment, withNamespace('monitoring'));
 function mix(...transforms) {
   let r = {};
 
