@@ -26,6 +26,12 @@ test('nested patch', () => {
       baz: 2
     }
   );
+
+  // orig has been left untouched.
+  expect(orig).toEqual({
+    foo: {bar: 1},
+    baz: 2
+  });
 });
 
 test('patches', () => {
