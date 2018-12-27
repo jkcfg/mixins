@@ -9,7 +9,7 @@ function mix(...transforms) {
   for (const transform of transforms) {
     switch (typeof transform) {
     case 'object':
-      r = Object.assign({}, r, transform);
+      r = patch(r, transform);
       break;
     case 'function':
       r = transform(r);
