@@ -7,3 +7,10 @@ jobs:
   include:
     - script: npm run lint
     - script: npm test
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: npm publish
+  on:
+    tags: true
