@@ -1,0 +1,12 @@
+{
+  "name": "mix-simple",
+  "version": "1.0.0",
+  "description": "",
+  "main": "namespace.js",
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@jkcfg/mixins": "^0.1.2"
+  }
+}
