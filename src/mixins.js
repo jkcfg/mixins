@@ -1,27 +1,3 @@
-// mixins are functions that take an object a return a new instance of that
-// object after having applied an arbitrary transformation on it.
-//    f(old) -> new
-// eg.
-
-function mix(...transforms) {
-  let r = {};
-
-  for (const transform of transforms) {
-    switch (typeof transform) {
-    case 'object':
-      r = Object.assign({}, r, transform);
-      break;
-    case 'function':
-      r = transform(r);
-      break;
-    default:
-      throw new TypeError('only objects and functions allowed as arguments');
-    }
-  }
-
-  return r;
-}
-
 // patch returns a new value that has the fields of `obj`, except
 // where overridden by values in `patchObj`.
 function patch(obj, patchObj) {
@@ -49,6 +25,38 @@ function patch(obj, patchObj) {
   default:
     throw new Error(`unhandled patch case: ${typeof obj}`);
   }
+}
+
+// mixins are functions that take an object a return a new instance of that
+// object after having applied an arbitrary transformation on it. The signature
+// of a transformation looks like:
+//
+//    f(old) -> new
+//
+// eg.
+//
+//   const withNamespace = ns => (
+//     obj => patch(obj, { metadata: { namespace: ns } })
+//   );
+//
+//   mix(deployment, withNamespace('monitoring'));
+function mix(...transforms) {
+  let r = {};
+
+  for (const transform of transforms) {
+    switch (typeof transform) {
+    case 'object':
+      r = patch(r, transform);
+      break;
+    case 'function':
+      r = transform(r);
+      break;
+    default:
+      throw new TypeError('only objects and functions allowed as arguments');
+    }
+  }
+
+  return r;
 }
 
 // patches makes a transformation that will structurally patch the

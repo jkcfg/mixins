@@ -1,4 +1,36 @@
-import { patch, patches } from '../src/mixins';
+import { mix, patch, patches } from '../src/mixins';
+
+test('mix objects', () => {
+  const r = mix({foo: 1}, {bar: 2}, {foo: 3});
+
+  expect(r).toEqual({
+    foo: 3,
+    bar: 2
+  });
+});
+
+test('mix transforms', () => {
+  const addLabel = (k, v) => {
+    const labels = {};
+    labels[k] = v;
+    return o => patch(o, { labels });
+  };
+  const orig = { foo: 1, labels: { l1: 'v1', l2: 'v2' } };
+
+  expect(mix(orig, addLabel('l3', 'v3'), addLabel('l1', 'w1'))).toEqual({
+    foo: 1,
+    labels: {
+      l1: 'w1',
+      l2: 'v2',
+      l3: 'v3',
+    }
+  });
+
+  // orig has been left untouched.
+  expect(orig).toEqual(
+    { foo: 1, labels: { l1: 'v1', l2: 'v2' } }
+  );
+});
 
 test('trivial patch', () => {
   expect(patch({}, {})).toEqual({});
@@ -26,6 +58,12 @@ test('nested patch', () => {
       baz: 2
     }
   );
+
+  // orig has been left untouched.
+  expect(orig).toEqual({
+    foo: {bar: 1},
+    baz: 2
+  });
 });
 
 test('patches', () => {
