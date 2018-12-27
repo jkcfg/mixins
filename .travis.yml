@@ -14,4 +14,4 @@ jobs:
 
     - stage: Deploy
       script: npm publish
-      if: tag = true
+      if: tag IS present
