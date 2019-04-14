@@ -74,3 +74,21 @@ test('patches', () => {
     bar: 2
   });
 });
+
+test("array patch", () => {
+  const orig = {
+    foo: { bar: 1, ary: ["foo"] },
+    baz: 2
+  };
+
+  expect(patch(orig, { foo: { bar: 3, ary: ["bar"] } })).toEqual({
+    foo: { bar: 3, ary: ["bar"] },
+    baz: 2
+  });
+
+  // orig has been left untouched.
+  expect(orig).toEqual({
+    foo: { bar: 1, ary: ["foo"] },
+    baz: 2
+  });
+});
