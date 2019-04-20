@@ -1,5 +1,5 @@
 import { mix, patch } from '@jkcfg/mixins';
-import std from 'std';
+import * as std from '@jkcfg/std';
 
 const withNamespace = ns => (
   obj => patch(obj, { metadata: { namespace: ns } })
